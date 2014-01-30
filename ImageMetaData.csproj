@@ -77,7 +77,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\LibTakamin\LibTakamin.csproj">
+    <ProjectReference Include="..\LibTakamin\LibTakamin.csproj">
       <Project>{6971B4BF-F772-4581-83C0-90E14BF5925D}</Project>
       <Name>LibTakamin</Name>
     </ProjectReference>

@@ -44,25 +44,54 @@ namespace ImageMetaData {
                         .Append(", Type: 0x").Append(pi.Type.ToString("X02"))
                         .Append(", Len: ").Append(pi.Type.ToString()).Append(" bytes\r\n")
                         .Append("Value:");
-                        if (pi.Type == (short)PropertyTagType.PropertyTagTypeASCII) {
-                            char[] ca = new char[pi.Value.Length - 1];
-                            for (int j = 0; j < pi.Value.Length - 1; j++) {
-                                ca[j] = (char)pi.Value[j];
+                        switch (pi.Type) {
+                        case (short)PropertyTagType.PropertyTagTypeASCII: {
+                                char[] ca = new char[pi.Value.Length - 1];
+                                for (int j = 0; j < pi.Value.Length - 1; j++) {
+                                    ca[j] = (char)pi.Value[j];
+                                }
+                                string strValue = new String(ca);
+                                sb.Append("'").Append(strValue).Append("'");
                             }
-                            string strValue = new String(ca);
-                            sb.Append("'").Append(strValue).Append("'");
-                        } else {
-                            sb.Append("[");
-                            for (int j = 0; j < pi.Len; j++) {
-                                sb.Append(((int)pi.Value[j]).ToString("X2"))
-                                    .Append(",");
+                            break;
+                        case (short)PropertyTagType.PropertyTagTypeLong: {
+                                int sizeOfElement = sizeof(uint);
+
+                                if (pi.Len > sizeOfElement) { sb.Append("["); }
+                                uint n = 0;
+                                for (int j = 0; j < pi.Len; j++) {
+                                    int octidx = j % sizeOfElement;
+                                    if (octidx == 0) {
+                                        n = 0;
+                                    }
+                                    n |= ((uint)pi.Value[j] << (octidx * 8));
+                                    if (octidx >= sizeOfElement - 1 || j >= pi.Len - 1) {
+                                        sb.Append(n.ToString())
+                                            .Append("(0x").Append(n.ToString("X4")).Append(")");
+                                    }
+                                    if (pi.Len > sizeOfElement) { sb.Append(","); }
+                                }
+                                if (pi.Len > sizeOfElement) { sb.Append("]"); }
+                                sb.Append(",");
+
                             }
-                            sb.Append("]");
+                            break;
+                        case (short)PropertyTagType.PropertyTagTypeByte:
+                        default: {
+                                sb.Append("[");
+                                for (int j = 0; j < pi.Len; j++) {
+                                    sb.Append("0x").Append(((int)pi.Value[j]).ToString("X2"))
+                                        .Append(",");
+                                }
+                                sb.Append("]");
+                            }
+                            break;
                         }
                         sb.Append("\r\n");
                         sb.Append("----------------------------\r\n");
-                        textBoxMetaData.Text = sb.ToString();
+                        i++;
                     }
+                    textBoxMetaData.Text = sb.ToString();
                 } catch (Exception ex) {
                     MessageBox.Show(
                         "ファイルの読み込みに失敗しました。\r\n" + ex.Message,

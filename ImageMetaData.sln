@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImageMetaData", "ImageMetaData.csproj", "{1666EC89-6052-44E2-A698-68BA3F4C509D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LibTakamin", "..\..\LibTakamin\LibTakamin.csproj", "{6971B4BF-F772-4581-83C0-90E14BF5925D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LibTakamin", "..\LibTakamin\LibTakamin.csproj", "{6971B4BF-F772-4581-83C0-90E14BF5925D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
